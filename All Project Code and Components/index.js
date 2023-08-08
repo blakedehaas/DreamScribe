@@ -63,7 +63,7 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-//console.log(process.env.OPENAI_API_KEY);
+//console.log(process.env.OPENAI_API_KEY); //test if api key is properly passed
 
 const openai = new OpenAIApi(configuration);
 
@@ -113,7 +113,7 @@ app.use('/styles', express.static('resources/css'));
 app.post('/format', async function (req, res) { //async function to await for ChatGPT reply
   const { raw_text, entry_id } = req.body; //seperates data
   
-  const prompt = `Format the following text using punctuation, capitalization, spacing, and paragraph breaks where appropriate. Correct grammar, typos, and misspellings. Do not remove or add any words. Reply only with the formatted version of the text:\n\n${raw_text}`;
+  const prompt = `Format the following text using punctuation, capitalization, spacing, and paragraph breaks where appropriate. Correct grammar, typos, and misspellings. Do not remove or add any words. Reply only with the formatted version of the following text:\n\n${raw_text}`;
   
   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
     model: "text-davinci-003", //text model being used
@@ -145,7 +145,7 @@ app.post('/format', async function (req, res) { //async function to await for Ch
 app.post('/summarize', async function (req, res) { //async function to await for ChatGPT reply
   const { raw_text, entry_id } = req.body; //seperates data
   
-  const prompt = `Summarize the following text while still communicating all the ideas present in the text. Maintain the same style in the summary. Reply with the summarized version of the text, do not include a title:\n\n${raw_text}`;
+  const prompt = `Summarize the following text and do not make the summary longer than the following text, reply only with the summarized version of the following text:\n\n${raw_text}`;
   
   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
     model: "text-davinci-003", //text model being used
@@ -288,7 +288,7 @@ app.post('/savenote', async function (req, res) {
   const userId = req.session.user.user_id;
   const query = 'INSERT INTO entries (entry_title, raw_text, user_id, journal_id, date, time) VALUES ($1, $2, $3, $4, to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'MM/DD/YYYY\'), to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'HH24:MI\')) RETURNING entry_id;';
   const noJournalQuery = 'INSERT INTO entries (entry_title, raw_text, user_id, date, time) VALUES ($1, $2, $3, to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'MM/DD/YYYY\'), to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'HH24:MI\')) RETURNING entry_id;';
-  const prompt = `Given the following text give me a number 1-5 that represents the mood of the writing with 1 being very sad and 5 being very happy. Only return a digit 1-5 and nothing else: ${rawText}`;
+  const prompt = `Rate the positivity of the following text from 1, 2, 3, 4, or 5 where 1 is very negative, 2 is negative, 3 is neutral, 4 is positive, and 5 is very positive, reply only with an integer from 1, 2, 3, 4, or 5: ${rawText}`;
   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
     model: "text-davinci-003", //text model being used
     prompt: prompt, //prompt set above
