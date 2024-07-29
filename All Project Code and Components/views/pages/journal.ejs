@@ -1,14 +1,20 @@
 <%- include ('../partials/head') %>
 <%- include ('../partials/menu', {active: 'journal'}) %>
+
 <link rel=stylesheet href="styles/allnotes.css"
 <main>
     <div class="container">
-        <div>
-          
-          <form action="/createnewjournal">
-            <h1 class="heading main-text">Journals</h1><button type="submit" class="button" style="width: 180px; margin-left: 50px;">Create New Journal</button>
-          </form>
+      <div class="container-fluid window">
+        <div class="greeting">
+          <h1 class="greeting heading main-text">Journals</h1>
         </div>
+      </div>
+      <hr>
+      <div style="display: flex; justify-content: center;">
+        <form action="/createnewjournal">
+          <button type="submit" class="button" style="width: 180px;">Create a Journal</button>
+        </form>
+      </div>
         <br>
         <br>
         <br>
@@ -25,7 +31,7 @@
                       <input type="hidden" name="journal-id" value=<%= journal.journal_id %>>
                       <button type="submit" class="btn btn-primary-outline stretched-link"><h5 class="card-title"><%= journal.journal_title %></h5></button>
                     </form>
-                    <p style="color:gray; font-size: 12px"><%= journal.journal_description %></p>
+                    <p style="color:gray; font-size: 12px; width: 75%; margin: auto;"><%= journal.journal_description %></p>
                   </div>
                 </div>
               </div>

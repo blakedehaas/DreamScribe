@@ -14,23 +14,21 @@
           <option class="dropdown-item" value="blue">Blue</option>
           <option class="dropdown-item" value="red">Red</option>
           <option class="dropdown-item" value="cherry">Cherry Blossom</option>
-        </select><input id="journal-title" type="text" class="char-limited" aria-label="Text input" placeholder="Journal Title" maxlength="100">
-        <p><span class="char-count">0/100</span></p>
+        </select><input id="journal-title" type="text" class="char-limited" aria-label="Text input" placeholder="Journal Title" maxlength="16">
+        <p><span class="char-count">0/16</span></p>
       </div>
       <br>
 
       <%# Journal Description Entry %>
       <div class="input-group">
-        <textarea id="journal-description" class="note-input char-limited" aria-label="With textarea" placeholder="Journal Description" maxlength="200"></textarea>
-        <p><span class="char-count">0/200</span></p>
+        <textarea id="journal-description" class="note-input char-limited" aria-label="With textarea" placeholder="Journal Description" maxlength="75"></textarea>
+        <p><span class="char-count">0/75</span></p>
       </div>
 
   
 
       <%# Save Button %>
       <div>
-        <label for="mood_auto">Enable Automatic Mood Analysis</label>
-        <input id="auto" type="checkbox" name="mood_auto" value=true>
         <button id="save-journal" class="button" style="float:right;">Save Journal</button>
       </div>
 
@@ -39,7 +37,6 @@
         saveJournalButton.addEventListener('click', function() { //on click of Save Journal
         var title = document.querySelector('#journal-title').value.trim(); //gets title
           var content = document.querySelector('#journal-description').value.trim(); //gets description
-          var autoMood = document.querySelector('#auto').checked;
           var colorSelector = document.getElementById("color-select");
           var journalColor = colorSelector.value;
           fetch('/savejournal', { //calls /savejournal and passes journal info
@@ -50,7 +47,6 @@
           body: JSON.stringify({ //converts data to json strings
             journal_title: title,
             journal_description: content,
-            auto_mood: autoMood,
             color: journalColor
           })
         })
