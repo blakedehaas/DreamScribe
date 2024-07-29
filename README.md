@@ -13,17 +13,18 @@ Reece Cogswell<br>
 </p>
 
 <h2> How To Run Dreamscribe </h2>
-<h3> <Add your OpenAI API key to the .env> </h3>
+<h3> Add your OpenAI API key to the .env </h3>
 <p> Edit the .env file within the 'All Project Code and Components' that contains the following lines:</p>
 
-# database credentials
-POSTGRES_USER="postgres"
-POSTGRES_PASSWORD="pwd"
+\# database credentials \
+POSTGRES_USER="postgres"\
+POSTGRES_PASSWORD="pwd"\
 POSTGRES_DB="users_db"
 
-# Node vars
-SESSION_SECRET="super duper secret!"
+\# Node vars\
+SESSION_SECRET="super duper secret!"\
 OPENAI_API_KEY="Replace with your OpenAI API Key"
+</p>
 
 <p> Replace the OPENAI_API_KEY with your OpenAI API key. You can create a key by going to https://openai.com/blog/openai-api. </p>
 
