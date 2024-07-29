@@ -1,0 +1,8 @@
+- Working journal functionality, removed OpenAI API calls temporarily
+All journal functionality is working now, so this is a functional journaling app.
+
+To Do:
+- re-enable the OpenAI API calls for format and summarize
+- rework how the database stores notes, we want to save the original text, the formatted text, and the summarized text so the user can switch between them. Currently, format and summarize overwrites the db entry for the note. Look into using an sqlite db so the entire db can be downloaded as a single sqlite file by the user to accomodate user data transparency and openness. This will also allow for persistent db storage after docker-compose down.
+- improve the journal editing capabilities. Cannot currently edit the description. Also need to look into a more accomodating character limit
+- Keep footer at bottom of screen instead of moving up to bottom of journals or notes
