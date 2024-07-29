@@ -24,7 +24,7 @@
       
       // call the OpenAI API to format the paragraph
       openai.complete({
-        engine: 'davinci',
+        engine: 'gpt-3.5-turbo-instruct',
         prompt: `format the following paragraph:\n\n${inputParagraph}\n\n`,
         maxTokens: 2048,
         temperature: 0.5,

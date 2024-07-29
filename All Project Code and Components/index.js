@@ -63,13 +63,12 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-//console.log(process.env.OPENAI_API_KEY); //test if api key is properly passed
+console.log(process.env.OPENAI_API_KEY); //test if api key is properly passed
 
 const openai = new OpenAIApi(configuration);
 
 app.use('/images', express.static('resources/images'));
 app.use('/styles', express.static('resources/css'));
-//app.use('/modal', express.static('));
 
 // *****************************************************
 // <!-- Section 4 : API Routes -->
@@ -86,15 +85,15 @@ app.use('/styles', express.static('resources/css'));
 
 // runCompletion();
 
-// adding test user
-(async () => {
-  try {
-    const hashedPassword = await bcrypt.hash('password', 10);
-    await db.none('INSERT INTO users (username, password) VALUES ($1, $2)', ['username', hashedPassword]);
-  } catch (err) {
-    console.error(err);
-  }
-})();
+// // adding test user
+// (async () => {
+//   try {
+//     const hashedPassword = await bcrypt.hash('password', 10);
+//     await db.none('INSERT INTO users (username, password) VALUES ($1, $2)', ['username', hashedPassword]);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// })();
 
 // async function insertData() {
 //   try {
@@ -115,14 +114,15 @@ app.post('/format', async function (req, res) { //async function to await for Ch
   
   const prompt = `Format the following text using punctuation, capitalization, spacing, and paragraph breaks where appropriate. Correct grammar, typos, and misspellings. Do not remove or add any words. Reply only with the formatted version of the following text:\n\n${raw_text}`;
   
-  const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-    model: "gpt-4o-mini", //text model being used
-    prompt: prompt, //prompt set above
-    max_tokens: 2048, //max number of word chunks in a single output
-    n: 1, //max number of outputs (only need one)
-  });
+  // const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
+  //   model: "gpt-4o-mini", //text model being used
+  //   prompt: prompt, //prompt set above
+  //   max_tokens: 2048, //max number of word chunks in a single output
+  //   n: 1, //max number of outputs (only need one)
+  // });
 
-  const formatted_text = completion.data.choices[0].text; //pulling out the text of the first choice from data from completion object
+  // const formatted_text = completion.data.choices[0].text; //pulling out the text of the first choice from data from completion object
+  const formatted_text = "Test format sucessful"
   
   const updateQuery = 'UPDATE entries SET raw_text = $1 where entry_id = $2;'; //update entry content
   db.any(updateQuery, [formatted_text, entry_id])
@@ -147,14 +147,15 @@ app.post('/summarize', async function (req, res) { //async function to await for
   
   const prompt = `Summarize the following text and do not make the summary longer than the following text, reply only with the summarized version of the following text:\n\n${raw_text}`;
   
-  const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-    model: "gpt-4o-mini", //text model being used
-    prompt: prompt, //prompt set above
-    max_tokens: 2048, //max number of word chunks in a single output
-    n: 1, //max number of outputs (only need one)
-  });
+  // const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
+  //   model: "gpt-4o-mini", //text model being used
+  //   prompt: prompt, //prompt set above
+  //   max_tokens: 2048, //max number of word chunks in a single output
+  //   n: 1, //max number of outputs (only need one)
+  // });
 
-  const summarized_text = completion.data.choices[0].text; //pulling out the text of the first choice from data from completion object
+  // const summarized_text = completion.data.choices[0].text; //pulling out the text of the first choice from data from completion object
+  const summarized_text = "Test summarize sucessful"
   
   const updateQuery = 'UPDATE entries SET raw_text = $1 where entry_id = $2;'; //update entry content
   db.any(updateQuery, [summarized_text, entry_id])
@@ -214,10 +215,10 @@ app.post('/register', async (req, res) => {
       const hash = await bcrypt.hash(password, 10);
       db.any(insert, [username, hash])
       .then(function (data) {
-        // req.session.user = data;
-        // req.session.save();
-        // res.redirect('/home');
-        res.render("pages/login", {message: 'Welcome to MindScribe!'});
+        req.session.user = data;
+        req.session.save();
+        res.redirect('/home');
+        res.render("pages/login", {message: 'Welcome to DreamScribe!'});
       })
       .catch((err) => {
         res.render("pages/register", {message: 'Could not create account'});
@@ -288,15 +289,18 @@ app.post('/savenote', async function (req, res) {
   const userId = req.session.user.user_id;
   const query = 'INSERT INTO entries (entry_title, raw_text, user_id, journal_id, date, time) VALUES ($1, $2, $3, $4, to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'MM/DD/YYYY\'), to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'HH24:MI\')) RETURNING entry_id;';
   const noJournalQuery = 'INSERT INTO entries (entry_title, raw_text, user_id, date, time) VALUES ($1, $2, $3, to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'MM/DD/YYYY\'), to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'HH24:MI\')) RETURNING entry_id;';
-  const prompt = `Rate the positivity of the following text from 1, 2, 3, 4, or 5 where 1 is very negative, 2 is negative, 3 is neutral, 4 is positive, and 5 is very positive, reply only with an integer from 1, 2, 3, 4, or 5: ${rawText}`;
-  const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-    model: "gpt-4o-mini", //text model being used
-    prompt: prompt, //prompt set above
-    max_tokens: 2048, //max number of word chunks in a single output
-    n: 1, //max number of outputs (only need one)
-    stop: null
-  });
-  const mood_num = parseInt(completion.data.choices[0].text.trim());
+  //const prompt = `Rate the positivity of the following text from 1, 2, 3, 4, or 5 where 1 is very negative, 2 is negative, 3 is neutral, 4 is positive, and 5 is very positive, reply only with an integer from 1, 2, 3, 4, or 5: ${rawText}`;
+  // TODO: Need to rework mood analysis
+  // const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
+  //   model: "gpt-4o-mini", //text model being used
+  //   prompt: prompt, //prompt set above
+  //   max_tokens: 2048, //max number of word chunks in a single output
+  //   n: 1, //max number of outputs (only need one)
+  //   stop: null
+  // });
+  // const mood_num = parseInt(completion.data.choices[0].text.trim());
+
+  const mood_num = 3
   const updateQuery = 'UPDATE entries SET entry_mood = $1 WHERE entry_id = $2;'; //update entry content
   let autoMood = false;
   if (journalId) {
@@ -318,7 +322,7 @@ app.post('/savenote', async function (req, res) {
             data: data,
             message: mood_num
           });
-          // res.redirect('/notes');
+          res.redirect('/notes');
         })
         .catch(function (err) {
           console.error(err);
@@ -329,7 +333,7 @@ app.post('/savenote', async function (req, res) {
         });
       }
       else {
-        // res.redirect('/notes');
+        res.redirect('/notes');
       }
     })
     .catch(function (err) {

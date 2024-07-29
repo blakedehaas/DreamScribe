@@ -82,9 +82,9 @@ describe('Server!', () => {
       .post('/savenote')
       .send(body)
       .end((err, res) => {
-        // console.log(err)
+        console.log(err)
         expect(res).to.have.status(200);
-        //expect(res.body.status).to.equals('success');
+        expect(res.body.status).to.equals('success');
         assert.strictEqual(res.body.message, 'Note added successfully');
         done();
       });
