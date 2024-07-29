@@ -77,7 +77,7 @@ app.use('/styles', express.static('resources/css'));
 
 // async function runCompletion() {
 //   const completion = await openai.createCompletion({
-//     model: "text-davinci-003",
+//     model: "gpt-4o-mini",
 //     prompt: "Hi ChatGPT how are you today?",
 //   });
 
@@ -116,7 +116,7 @@ app.post('/format', async function (req, res) { //async function to await for Ch
   const prompt = `Format the following text using punctuation, capitalization, spacing, and paragraph breaks where appropriate. Correct grammar, typos, and misspellings. Do not remove or add any words. Reply only with the formatted version of the following text:\n\n${raw_text}`;
   
   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-    model: "text-davinci-003", //text model being used
+    model: "gpt-4o-mini", //text model being used
     prompt: prompt, //prompt set above
     max_tokens: 2048, //max number of word chunks in a single output
     n: 1, //max number of outputs (only need one)
@@ -148,7 +148,7 @@ app.post('/summarize', async function (req, res) { //async function to await for
   const prompt = `Summarize the following text and do not make the summary longer than the following text, reply only with the summarized version of the following text:\n\n${raw_text}`;
   
   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-    model: "text-davinci-003", //text model being used
+    model: "gpt-4o-mini", //text model being used
     prompt: prompt, //prompt set above
     max_tokens: 2048, //max number of word chunks in a single output
     n: 1, //max number of outputs (only need one)
@@ -290,7 +290,7 @@ app.post('/savenote', async function (req, res) {
   const noJournalQuery = 'INSERT INTO entries (entry_title, raw_text, user_id, date, time) VALUES ($1, $2, $3, to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'MM/DD/YYYY\'), to_char(CURRENT_TIMESTAMP AT TIME ZONE \'MDT\', \'HH24:MI\')) RETURNING entry_id;';
   const prompt = `Rate the positivity of the following text from 1, 2, 3, 4, or 5 where 1 is very negative, 2 is negative, 3 is neutral, 4 is positive, and 5 is very positive, reply only with an integer from 1, 2, 3, 4, or 5: ${rawText}`;
   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-    model: "text-davinci-003", //text model being used
+    model: "gpt-4o-mini", //text model being used
     prompt: prompt, //prompt set above
     max_tokens: 2048, //max number of word chunks in a single output
     n: 1, //max number of outputs (only need one)
@@ -345,7 +345,7 @@ app.post('/savenote', async function (req, res) {
 //   const {text, id } = req.body;
 //   const prompt = `Given the following text give me a only number 1-5 that represents the mood of the writing with 1 being very sad and 5 being very happy: ${text}`;
 //   const completion = await openai.createCompletion({ //createCompletion is a OpenAI keyword to complete a prompt, await for ChatGPT reply
-//     model: "text-davinci-003", //text model being used
+//     model: "gpt-4o-mini", //text model being used
 //     prompt: prompt, //prompt set above
 //     max_tokens: 2048, //max number of word chunks in a single output
 //     n: 1, //max number of outputs (only need one)
