@@ -13,7 +13,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@openai/api"></script>
   <script>
     // replace with your API key
-    const apiKey = '';
+    const apiKey = process.env.OPENAI_API_KEY;
     
     // initialize the API client
     const openai = new OpenAI(apiKey);
