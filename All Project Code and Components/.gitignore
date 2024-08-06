@@ -69,7 +69,8 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env # Warning: Do not commit API Keys to Github
+# Warning: Do not commit API Keys to Github
+.env 
 .env.test
 
 # parcel-bundler cache (https://parceljs.org/)
