@@ -1,0 +1,9 @@
+steps:
+  - name: 'gcr.io/cloud-builders/gcloud'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud secrets versions access latest --secret="openai_api_key" > openai_api_key.txt
+        export OPENAI_API_KEY=$(cat openai_api_key.txt)
+        docker compose -f docker-compose.yaml up --build
