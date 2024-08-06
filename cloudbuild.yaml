@@ -4,6 +4,6 @@ steps:
     args:
       - '-c'
       - |
-        gcloud secrets versions access latest --secret="openai_api_key" > openai_api_key.txt
-        export OPENAI_API_KEY=$(cat openai_api_key.txt)
+        OPENAI_API_KEY=$(gcloud secrets versions access latest --secret="OPENAI_API_KEY")
+        export OPENAI_API_KEY
         docker compose -f docker-compose.yaml up --build
