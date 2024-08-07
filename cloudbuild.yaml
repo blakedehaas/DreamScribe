@@ -19,7 +19,7 @@ steps:
         # Navigate to the directory containing docker-compose.yaml
         cd "DreamScribe/All Project Code and Components"
         # Run Docker Compose with the environment variable
-        docker-compose -f docker-compose.yaml up --build
+        docker-compose up
 
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['-m', 'rsync', '-r', '-c', '-d', '.', 'gs://your-bucket-name']
