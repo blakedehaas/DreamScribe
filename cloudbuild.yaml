@@ -8,7 +8,8 @@ steps:
         OPENAI_API_KEY=$(gcloud secrets versions access latest --secret="OPENAI_API_KEY")
         # Export the variable for Docker Compose to use
         export OPENAI_API_KEY
-        # Run Docker Compose with the environment variable
+        # Navigate to the correct directory and run Docker Compose with the environment variable
+        cd "DreamScribe/All Project Code and Components"
         docker-compose -f docker-compose.yaml up --build
 
   - name: 'gcr.io/cloud-builders/gsutil'
