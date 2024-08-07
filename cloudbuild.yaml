@@ -5,7 +5,7 @@ steps:
       - '-c'
       - |
         # Access the secret and set the environment variable
-        OPENAI_API_KEY=$(gcloud secrets versions access latest --secret="projects/dingletronics/secrets/OPENAI_API_KEY")
+        OPENAI_API_KEY=$(gcloud secrets versions access latest --secret="OPENAI_API_KEY")
         # Export the variable for Docker Compose to use
         export OPENAI_API_KEY
         # Run Docker Compose with the environment variable
@@ -14,11 +14,10 @@ steps:
   - name: 'gcr.io/cloud-builders/gsutil'
     args: ['-m', 'rsync', '-r', '-c', '-d', '.', 'gs://your-bucket-name']
 
-# Add this section to define the secret
-# availableSecrets:
-#   secretManager:
-#   - versionName: projects/dingletronics/secrets/OPENAI_API_KEY/versions/latest
-#     env: OPENAI_API_KEY
+availableSecrets:
+  secretManager:
+  - versionName: projects/dingletronics/secrets/OPENAI_API_KEY/versions/latest
+    env: OPENAI_API_KEY
 
 options:
   logging: CLOUD_LOGGING_ONLY
