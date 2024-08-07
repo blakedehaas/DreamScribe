@@ -1,4 +1,12 @@
 steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Remove the cached Docker image
+        docker rmi -f gcr.io/cloud-builders/docker || true
+
   - name: 'gcr.io/cloud-builders/gcloud'
     entrypoint: 'bash'
     args:
@@ -8,8 +16,9 @@ steps:
         OPENAI_API_KEY=$(gcloud secrets versions access latest --secret="OPENAI_API_KEY")
         # Export the variable for Docker Compose to use
         export OPENAI_API_KEY
-        # Navigate to the correct directory and run Docker Compose with the environment variable
+        # Navigate to the directory containing docker-compose.yaml
         cd "DreamScribe/All Project Code and Components"
+        # Run Docker Compose with the environment variable
         docker-compose -f docker-compose.yaml up --build
 
   - name: 'gcr.io/cloud-builders/gsutil'
