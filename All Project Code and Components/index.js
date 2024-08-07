@@ -86,14 +86,14 @@ app.use('/styles', express.static('resources/css'));
 // runCompletion();
 
 // adding test user
-(async () => {
-  try {
-    const hashedPassword = await bcrypt.hash('password', 10);
-    await db.none('INSERT INTO users (username, password) VALUES ($1, $2)', ['username', hashedPassword]);
-  } catch (err) {
-    console.error(err);
-  }
-})();
+// (async () => {
+//   try {
+//     const hashedPassword = await bcrypt.hash('password', 10);
+//     await db.none('INSERT INTO users (username, password) VALUES ($1, $2)', ['username', hashedPassword]);
+//   } catch (err) {
+//     console.error(err);
+//   }
+// })();
 
 // async function insertData() {
 //   try {
