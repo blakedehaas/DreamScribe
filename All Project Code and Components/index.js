@@ -9,20 +9,28 @@ const bodyParser = require('body-parser');
 const session = require('express-session'); // To set the session object. To store or access session data, use the `req.session`, which is (generally) serialized as JSON by the store.
 const bcrypt = require('bcrypt'); //  To hash passwords
 const axios = require('axios'); // To make HTTP requests from our server
-
-// const {Configuration, OpenAIApi} = require("openai");
+const fs = require('fs');
 
 // *****************************************************
 // <!-- Section 2 : Connect to DB -->
 // *****************************************************
 
+// Load the service account key from the mounted secret
+const keyPath = '/secrets/cloud-sql-key/key.json';
+if (fs.existsSync(keyPath)) {
+  process.env.GOOGLE_APPLICATION_CREDENTIALS = keyPath;
+}
+
 // database configuration
 const dbConfig = {
-  host: 'db', // the database server
-  port: 5432, // the database port
+  host: process.env.DB_HOST || '/cloudsql/dingletronics:us-central1:dreamscribe',
+  port: 5432,
   database: process.env.POSTGRES_DB, // the database name
   user: process.env.POSTGRES_USER, // the user account to connect with
   password: process.env.POSTGRES_PASSWORD, // the password of the user account
+  ssl: {
+    rejectUnauthorized: false
+  }
 };
 
 const db = pgp(dbConfig);
